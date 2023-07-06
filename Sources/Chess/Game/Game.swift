@@ -83,7 +83,7 @@ public extension Chess {
             whiteDungeon.removeAll()
         }
         public mutating func nextTurn() {
-            activePlayer.turnUpdate(game: self)
+            activePlayer.turnUpdate(game: &self)
         }
         public mutating func changeSides(_ side: Chess.Side) {
             board.playingSide = side

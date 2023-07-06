@@ -40,7 +40,7 @@ extension Chess {
         /// The move from the evaluation is sent to the ChessStore
         ///
         /// - Parameter game: The game that is being played. This is immutable. The ChessStore is used for updates.
-        public override func turnUpdate(game: Chess.Game) {
+        public override func turnUpdate(game: inout Chess.Game) {
             guard game.board.playingSide == side else {
                 Chess.log.debug("Tried to turnUpdate when not my turn: \(side)")
                 return
@@ -56,25 +56,41 @@ extension Chess {
             let localBoard = game.board
             weak var weakSelf = self
             weak var weakDelegate = delegate
-            let answerDate = Date(timeIntervalSinceNow: responseDelay)
-            Thread.detachNewThread {
-                if answerDate.compare(Date()) == .orderedDescending {
-                    Thread.sleep(until: answerDate)
-                }
-                guard let self = weakSelf, let delegate = weakDelegate else { return }
-                let board = localBoard
-                guard let move = self.evalutate(board: board) else {
-                    let square = game.board.squareForActiveKing
-                    guard square.piece?.side == self.side else {
-                        Chess.log.critical("Misconfigured board, bot cannot find it's own king.")
-                        return
-                    }
-                    let move = self.side.resigns(king: square.position)
-                    delegate.gameAction(.makeMove(move: move))
-                    return
-                }
-                delegate.gameAction(.makeMove(move: move))
-            }
+			if responseDelay == 0 {
+				let board = localBoard
+				guard let move = self.evalutate(board: board) else {
+					let square = game.board.squareForActiveKing
+					guard square.piece?.side == self.side else {
+						Chess.log.critical("Misconfigured board, bot cannot find it's own king.")
+						return
+					}
+					let move = self.side.resigns(king: square.position)
+					ChessStore.makeMove(move, game: &game)
+					return
+				}
+				ChessStore.makeMove(move, game: &game)
+			}
+			else {
+				let answerDate = Date(timeIntervalSinceNow: responseDelay)
+				Thread.detachNewThread { [game] in
+					if answerDate.compare(Date()) == .orderedDescending {
+						Thread.sleep(until: answerDate)
+					}
+					guard let self = weakSelf, let delegate = weakDelegate else { return }
+					let board = localBoard
+					guard let move = self.evalutate(board: board) else {
+						let square = game.board.squareForActiveKing
+						guard square.piece?.side == self.side else {
+							Chess.log.critical("Misconfigured board, bot cannot find it's own king.")
+							return
+						}
+						let move = self.side.resigns(king: square.position)
+						delegate.gameAction(.makeMove(move: move))
+						return
+					}
+					delegate.gameAction(.makeMove(move: move))
+				}
+			}
         }
         open func validChoices(board: Chess.Board) -> ChessRobotChoices {
             board.createValidVariants(for: side)

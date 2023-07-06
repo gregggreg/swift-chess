@@ -65,7 +65,7 @@ extension Chess {
         public func timerRanOut() {
             fatalError("This method is meant to be overriden by subclasses")
         }
-        public func turnUpdate(game: Chess.Game) {
+        public func turnUpdate(game: inout Chess.Game) {
             fatalError("This method is meant to be overriden by subclasses")
         }
         public func iconName() -> String {

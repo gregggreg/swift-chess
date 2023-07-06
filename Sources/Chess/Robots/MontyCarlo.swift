@@ -32,7 +32,7 @@ public extension Chess.Robot {
         /// The move from the evaluation is sent to the ChessStore
         ///
         /// - Parameter game: The game that is being played. This is immutable. The ChessStore is used for updates.
-        public override func turnUpdate(game: Chess.Game) {
+        public override func turnUpdate(game: inout Chess.Game) {
             guard game.board.playingSide == side else {
                 Chess.log.debug("Tried to turnUpdate when not my turn: \(side)")
                 return
@@ -46,7 +46,7 @@ public extension Chess.Robot {
             strategist.randomSource = GKARC4RandomSource()
             weak var weakSelf = self
             weak var weakDelegate = delegate
-            Thread.detachNewThread {
+            Thread.detachNewThread { [game] in
                 guard let self = weakSelf, let delegate = weakDelegate else { return }
                 guard let strategy = self.strategist.bestMoveForActivePlayer() else {
                     let square = game.board.squareForActiveKing

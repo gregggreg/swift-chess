@@ -32,7 +32,7 @@ public extension Chess {
 		}
 		
         public override func isBot() -> Bool { return false }
-        public override func turnUpdate(game: Chess.Game) {
+        public override func turnUpdate(game: inout Chess.Game) {
             if let move = moveAttempt {
                 // Premove baby!
                 moveAttempt = nil

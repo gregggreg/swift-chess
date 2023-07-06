@@ -9,7 +9,7 @@ import Foundation
 // swiftlint:disable nesting
 public extension Chess {
     typealias MoveResult = Result<Chess.Piece?, Chess.Move.Limitation>
-    struct Turn: Identifiable {
+    struct Turn: Identifiable, Codable {
         public var white: Move?
         public var black: Move?
         public let id: Int
@@ -19,11 +19,11 @@ public extension Chess {
             self.black = black
         }
     }
-    struct Move: Equatable {
+    struct Move: Equatable, Codable {
         public static func == (lhs: Move, rhs: Move) -> Bool {
             return lhs.side == rhs.side && lhs.start == rhs.start && lhs.end == rhs.end
         }
-        public enum Limitation: String, Error {
+        public enum Limitation: String, Error, Codable {
             case unknown = "Unknown limitation."
             case noPieceToMove = "The was no piece at the starting square."
             case notYourTurn = "The wrong side tried to move."

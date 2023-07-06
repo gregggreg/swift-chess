@@ -65,13 +65,13 @@ public extension ChessStore {
         game.info = .gameEnded(result: result, status: status)
         game.userPaused = true
     }
-    private static func resetBoard(FEN: String, game: inout Chess.Game) {
+	static func resetBoard(FEN: String, game: inout Chess.Game) {
         game.pgn = Chess.Game.freshPGN(game.black, game.white)
         game.info = nil
         game.board.resetBoard(FEN: FEN)
         game.clearDungeons()
     }
-    private static func makeMove(_ move: Chess.Move, game: inout Chess.Game) {
+	static func makeMove(_ move: Chess.Move, game: inout Chess.Game) {
         game.execute(move: move)
         if game.board.lastMove == move {
             game.changeSides(move.side.opposingSide)
@@ -93,7 +93,7 @@ public extension ChessStore {
         }
     }
     static func userTappedSquare(_ position: Chess.Position, game: inout Chess.Game) {
-        guard let human = (game.white as? Chess.HumanPlayer) ?? (game.black as? Chess.HumanPlayer) else {
+		guard let human = game.activePlayer as? Chess.HumanPlayer else { //(game.white as? Chess.HumanPlayer) ?? (game.black as? Chess.HumanPlayer) else {
             game.clearActivePlayerSelections()
             return
         }

@@ -7,11 +7,11 @@
 import Foundation
 
 public extension Chess {
-    struct Piece: Identifiable, Equatable {
+    struct Piece: Identifiable, Equatable, Codable {
         public static func == (lhs: Piece, rhs: Piece) -> Bool {
             return lhs.pieceType.fen() == rhs.pieceType.fen()
         }
-        public let id = UUID()
+        public var id = UUID()
         public let side: Side
         public var pieceType: PieceType
         public var FEN: String {

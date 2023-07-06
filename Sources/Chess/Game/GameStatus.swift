@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Chess {
-    enum GameStatus {
+	enum GameStatus : String, Codable {
         case unknown
         case notYetStarted
         case active

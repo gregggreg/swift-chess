@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct SquareSelected: View {
-    @EnvironmentObject public var store: ChessStore
+    public var store: ChessStore
     let position: Chess.Position
     public var body: some View {
         guard store.environment.preferences.highlightLastMove,
@@ -20,7 +20,8 @@ public struct SquareSelected: View {
             .aspectRatio(1, contentMode: .fill)
         return AnyView(selected)
     }
-    public init(_ idx: Int) {
+	public init(_ idx: Int, store: ChessStore) {
         self.position = Chess.Position(idx)
+		self.store = store
     }
 }

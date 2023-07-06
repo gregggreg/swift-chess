@@ -7,7 +7,7 @@
 import SwiftUI
 
 extension Chess {
-    public enum PieceGlyph: String, Equatable {
+    public enum PieceGlyph: String, Equatable, Codable {
         case blackKing = "\u{265A}"
         case blackQueen = "\u{265B}"
         case blackRook = "\u{265C}"

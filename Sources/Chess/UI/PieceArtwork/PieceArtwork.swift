@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public struct PieceArtwork {
+public struct PieceArtwork : Sendable {
     let start: CGPoint
     let strokes: [Stroke]
     let jewels: [Jewel]

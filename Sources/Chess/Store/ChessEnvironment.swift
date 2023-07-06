@@ -8,13 +8,13 @@
 import Foundation
 import Combine
 
-public struct ChessEnvironment {
-    static let defaults = UserDefaults(suiteName: "Chess")
-    public enum TargetEnvironment {
+public struct ChessEnvironment: Codable {
+    static let defaults = UserDefaults(suiteName: "group.com.cromulentlabs.ChessWidget")
+	public enum TargetEnvironment: String, Codable {
         case production
         case development
     }
-    public enum EnvironmentChange {
+	public enum EnvironmentChange: Codable {
         case target(newTarget: TargetEnvironment)
         case boardColor(newColor: Chess.UI.BoardColor)
         case moveHighlight(lastMove: Bool, choices: Bool)

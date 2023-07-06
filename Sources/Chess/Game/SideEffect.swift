@@ -7,7 +7,7 @@
 import Foundation
 
 public extension Chess.Move {
-    enum SideEffect: Error {
+    enum SideEffect: Error, Codable {
         case notKnown
         case castling(rook: Int, destination: Int)
         case enPassantInvade(territory: Int, invader: Int)

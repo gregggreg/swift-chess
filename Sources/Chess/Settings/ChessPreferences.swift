@@ -8,10 +8,10 @@
 import SwiftUI
 
 public extension Chess.UI {
-    struct Preferences {
-        @AppStorage("highlightLastMove", store: ChessEnvironment.defaults)
+	struct Preferences : Codable {
+        //@AppStorage("highlightLastMove", store: ChessEnvironment.defaults)
             public var highlightLastMove: Bool = true
-        @AppStorage("highlightChoices", store: ChessEnvironment.defaults)
+        //@AppStorage("highlightChoices", store: ChessEnvironment.defaults)
             public var highlightChoices: Bool = true
     }
 }

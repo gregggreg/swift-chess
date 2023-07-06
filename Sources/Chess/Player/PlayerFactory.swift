@@ -8,10 +8,10 @@
 import SwiftUI
 
 public extension Chess {
-    struct PlayerFactorySettings {
-        @AppStorage("defaultWhiteIndex", store: ChessEnvironment.defaults)
+	struct PlayerFactorySettings : Codable {
+        //@AppStorage("defaultWhiteIndex", store: ChessEnvironment.defaults)
             public var white: Int = 0
-        @AppStorage("defaultBlackIndex", store: ChessEnvironment.defaults)
+        //@AppStorage("defaultBlackIndex", store: ChessEnvironment.defaults)
             public var black: Int = 1
         public init() {}
     }

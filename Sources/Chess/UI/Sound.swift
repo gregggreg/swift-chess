@@ -6,7 +6,7 @@
 
 /// The sound is handled outside of this library, but for timing the optional
 /// methods are included here.
-public protocol ChessSoundEffectDelegate: class {
+public protocol ChessSoundEffectDelegate: AnyObject {
     func move()
     func capture()
     func check()

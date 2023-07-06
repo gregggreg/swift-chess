@@ -28,7 +28,12 @@ public extension Chess.Robot {
                       side: side,
                       moves: moveStrings.compactMap({ side.twoSquareMove(fromString: $0) }))
         }
-        public override func evalutate(board: Chess.Board) -> Chess.Move? {
+		
+		required public init(from decoder: Decoder) throws {
+			fatalError("init(from:) has not been implemented")
+		}
+		
+		public override func evalutate(board: Chess.Board) -> Chess.Move? {
             guard self.currentMove<self.moves.count else {
                 return nil
             }
@@ -36,6 +41,10 @@ public extension Chess.Robot {
             self.currentMove += 1
             return move
         }
+		
+		public override func subType() -> Chess.Player.Type {
+			return Self.self
+		}
     }
 }
 

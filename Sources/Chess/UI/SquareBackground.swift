@@ -6,7 +6,7 @@
 import SwiftUI
 
 public struct SquareBackground: View {
-    @EnvironmentObject public var store: ChessStore
+    public var store: ChessStore
     let position: Chess.Position
     public var body: some View {
         Rectangle() // The square background
@@ -18,7 +18,8 @@ public struct SquareBackground: View {
         let evenSquare: Bool = (position.rank + position.fileNumber) % 2 == 0
         return evenSquare ? themeColor.dark : themeColor.light
     }
-    public init(_ idx: Int) {
+	public init(_ idx: Int, store: ChessStore) {
+		self.store = store
         self.position = Chess.Position(idx)
     }
 }

@@ -99,5 +99,26 @@ extension Chess {
             self.stopAfterMove = stopAfterMove
             super.init(side: side, matchLength: nil)
         }
-    }
+		
+		enum CodingKeys: CodingKey {
+			case responseDelay
+			case stopAfterMove
+		}
+		
+		required public init(from decoder: Decoder) throws {
+			responseDelay = 0
+			stopAfterMove = 0
+			try super.init(from: decoder)
+			let container = try decoder.container(keyedBy: CodingKeys.self)
+			responseDelay = try container.decode(TimeInterval.self, forKey: .responseDelay)
+			stopAfterMove = try container.decode(Int.self, forKey: .stopAfterMove)
+		}
+		
+		public override func encode(to encoder: Encoder) throws {
+			try super.encode(to: encoder)
+			var container = encoder.container(keyedBy: CodingKeys.self)
+			try container.encode(responseDelay, forKey: .responseDelay)
+			try container.encode(stopAfterMove, forKey: .stopAfterMove)
+		}
+	}
 }

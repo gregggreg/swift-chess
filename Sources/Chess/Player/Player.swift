@@ -9,7 +9,7 @@ import Foundation
 public typealias ChessTurnCallback = (Chess.Move) -> Void
 
 extension Chess {
-    open class Player {
+	open class Player : Codable {
         public var side: Side
         public var timeLeft: TimeInterval?
         public var currentMoveStartTime: Date?
@@ -25,6 +25,37 @@ extension Chess {
             self.side = side
             self.timeLeft = matchLength
         }
+		
+		enum CodingKeys: CodingKey {
+			case side
+			case timeLeft
+			case currentMoveStartTime
+			case firstName
+			case lastName
+		}
+		
+		required public init(from decoder: Decoder) throws {
+			let container = try decoder.container(keyedBy: CodingKeys.self)
+			side = try container.decode(Side.self, forKey: .side)
+			timeLeft = try? container.decodeIfPresent(TimeInterval.self, forKey: .timeLeft)
+			currentMoveStartTime = try? container.decodeIfPresent(Date.self, forKey: .currentMoveStartTime)
+			firstName = try? container.decodeIfPresent(String.self, forKey: .firstName)
+			lastName = try? container.decodeIfPresent(String.self, forKey: .lastName)
+		}
+		
+		public func encode(to encoder: Encoder) throws {
+			var container = encoder.container(keyedBy: CodingKeys.self)
+			try container.encode(side, forKey: .side)
+			try container.encodeIfPresent(timeLeft, forKey: .timeLeft)
+			try container.encodeIfPresent(currentMoveStartTime, forKey: .currentMoveStartTime)
+			try container.encodeIfPresent(firstName, forKey: .firstName)
+			try container.encodeIfPresent(lastName, forKey: .lastName)
+		}
+		
+		public func subType() -> Chess.Player.Type {
+			return Self.self
+		}
+		
         public func prepareForGame() {
             fatalError("This method is meant to be overriden by subclasses")
         }

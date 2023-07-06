@@ -7,20 +7,22 @@
 import Foundation
 import Combine
 
-public protocol ChessGameDelegate: AnyObject {
+public protocol ChessGameDelegate: AnyObject, Codable {
     func gameAction(_ action: Chess.GameAction)
 }
 
 public extension Chess {
-    struct Game {
+	struct Game : Codable {
         private var botPausedMove: Chess.Move?
-        weak var delegate: ChessGameDelegate?
+		public weak var delegate: ChessGameDelegate?
         public var userPaused = true
         public var blackDungeon: [Chess.Piece] = [] // Captured white pieces
         public var whiteDungeon: [Chess.Piece] = []
         public var board = Chess.Board(populateExpensiveVisuals: true)
         public var black: Player
         public var white: Player
+		public var blackType: String
+		public var whiteType: String
         public var round: Int = 1
         public var pgn: Chess.Game.PortableNotation
         public var info: GameUpdate?
@@ -53,7 +55,9 @@ public extension Chess {
             }
             self.pgn = Self.freshPGN(black, white)
             self.white = white
+			self.whiteType = String(describing: white.subType())
             self.black = black
+			self.blackType = String(describing: black.subType())
             self.board.resetBoard()
         }
         static func freshPGN(_ blackPlayer: Chess.Player, _ whitePlayer: Chess.Player) -> Chess.Game.PortableNotation {
@@ -223,5 +227,80 @@ public extension Chess {
                 Chess.log.info("Human's move had unknown limitation.")
             }
         }
+		
+		enum CodingKeys: CodingKey {
+			case botPausedMove
+			case userPaused
+			case blackDungeon
+			case whiteDungeon
+			case board
+			case black
+			case blackType
+			case white
+			case whiteType
+			case round
+			case pgn
+			case info
+			case kingFlash
+		}
+		
+		public init(from decoder: Decoder) throws {
+			let container = try decoder.container(keyedBy: CodingKeys.self)
+			botPausedMove = try? container.decodeIfPresent(Chess.Move.self, forKey: .botPausedMove)
+			userPaused = try container.decode(Bool.self, forKey: .userPaused)
+			blackDungeon = try container.decode([Chess.Piece].self, forKey: .blackDungeon)
+			whiteDungeon = try container.decode([Chess.Piece].self, forKey: .whiteDungeon)
+			board = try container.decode(Chess.Board.self, forKey: .board)
+			whiteType = try container.decode(String.self, forKey: .whiteType)
+			white = try Chess.Game.decodePlayer(whiteType, key: .white, container: container)
+			blackType = try container.decode(String.self, forKey: .blackType)
+			black = try Chess.Game.decodePlayer(blackType, key: .black, container: container)
+			round = try container.decode(Int.self, forKey: .round)
+			pgn = try container.decode(Chess.Game.PortableNotation.self, forKey: .pgn)
+			info = try? container.decodeIfPresent(GameUpdate.self, forKey: .info)
+			kingFlash = try container.decode(Bool.self, forKey: .kingFlash)
+		}
+		
+		private static func decodePlayer(_ type: String, key: Chess.Game.CodingKeys, container: KeyedDecodingContainer<Chess.Game.CodingKeys>) throws -> Player {
+			if type == String(describing: Chess.HumanPlayer.self) {
+				return try container.decode(HumanPlayer.self, forKey: key)
+			}
+			if type == String(describing: Chess.Robot.MindyMaxBot.self) {
+				return try container.decode(Robot.MindyMaxBot.self, forKey: key)
+			}
+			if type == String(describing: Chess.Robot.MontyCarloBot.self) {
+				return try container.decode(Robot.MontyCarloBot.self, forKey: key)
+			}
+			if type == String(describing: Chess.Robot.PlaybackBot.self) {
+				return try container.decode(Robot.PlaybackBot.self, forKey: key)
+			}
+			if type == String(describing: Chess.Robot.CautiousBot.self) {
+				return try container.decode(Robot.CautiousBot.self, forKey: key)
+			}
+			if type == String(describing: Chess.Robot.GreedyBot.self) {
+				return try container.decode(Robot.GreedyBot.self, forKey: key)
+			}
+			if type == String(describing: Chess.Robot.self) {
+				return try container.decode(Robot.self, forKey: key)
+			}
+			return try container.decode(Player.self, forKey: key)
+		}
+		
+		public func encode(to encoder: Encoder) throws {
+			var container = encoder.container(keyedBy: CodingKeys.self)
+			try container.encodeIfPresent(botPausedMove, forKey: .botPausedMove)
+			try container.encode(userPaused, forKey: .userPaused)
+			try container.encode(blackDungeon, forKey: .blackDungeon)
+			try container.encode(whiteDungeon, forKey: .whiteDungeon)
+			try container.encode(board, forKey: .board)
+			try container.encode(black, forKey: .black)
+			try container.encode(white, forKey: .white)
+			try container.encode(String(describing: black.subType()), forKey: .blackType)
+			try container.encode(String(describing: white.subType()), forKey: .whiteType)
+			try container.encode(round, forKey: .round)
+			try container.encode(pgn, forKey: .pgn)
+			try container.encodeIfPresent(info, forKey: .info)
+			try container.encode(kingFlash, forKey: .kingFlash)
+		}
     }
 }

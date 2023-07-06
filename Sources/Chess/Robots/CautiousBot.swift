@@ -27,5 +27,9 @@ public extension Chess.Robot {
                                     .filterTopWeightClass()
             return potentials
         }
+		
+		public override func subType() -> Chess.Player.Type {
+			return Self.self
+		}
     }
 }

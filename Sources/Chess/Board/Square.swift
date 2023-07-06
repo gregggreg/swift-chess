@@ -7,7 +7,7 @@
 import Foundation
 
 extension Chess {
-    public struct Square {
+	public struct Square : Codable {
         public let position: Position
         public var piece: Piece?
         public var isKingSide: Bool { return (position.fileNumber > 3) }

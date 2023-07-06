@@ -9,17 +9,17 @@ import Foundation
 import SwiftUI
 import Combine
 
-public final class ChessStore: ObservableObject, ChessGameDelegate {
+public final class ChessStore: NSObject, ObservableObject, ChessGameDelegate, Codable {
     @Published public var game: Chess.Game
     @Published public var environment: ChessEnvironment
     private let gameSubject = PassthroughSubject<Chess.Game, Never>()
-    private let gameReducer: ChessGameReducer
+    private var gameReducer: ChessGameReducer
     private let gameSemaphore = DispatchSemaphore(value: 1)
     private let environmentSubject = PassthroughSubject<ChessEnvironment, Never>()
-    private let environmentReducer: ChessEnvironmentReducer
+    private var environmentReducer: ChessEnvironmentReducer
     private let environmentSemaphore = DispatchSemaphore(value: 1)
     private var cancellables: Set<AnyCancellable> = []
-    public init(
+	public init(
         game: Chess.Game = Chess.Game(),
         gameReducer: @escaping ChessGameReducer = ChessStore.gameReducer,
         environmentReducer: @escaping ChessEnvironmentReducer = ChessStore.environmentReducer,
@@ -29,12 +29,33 @@ public final class ChessStore: ObservableObject, ChessGameDelegate {
         self.gameReducer = gameReducer
         self.environmentReducer = environmentReducer
         self.environment = environment
+		super.init()
         // If the initial board is empty, let's set up the pieces.
         if !self.game.board.squares.contains(where: { !$0.isEmpty }) {
             self.game.board.resetBoard()
         }
         self.game.delegate = self
     }
+	
+	enum CodingKeys: CodingKey {
+		case game
+		case environment
+	}
+	
+	required public init(from decoder: Decoder) throws {
+		let container = try decoder.container(keyedBy: CodingKeys.self)
+		game = try container.decode(Chess.Game.self, forKey: .game)
+		environment = try container.decode(ChessEnvironment.self, forKey: .environment)
+		gameReducer = ChessStore.gameReducer
+		environmentReducer = ChessStore.environmentReducer
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encode(game, forKey: .game)
+		try container.encode(environment, forKey: .environment)
+	}
+	
     public func gameAction(_ action: Chess.GameAction) {
         // Process the message on the background, then sink back to the main thread.
         DispatchQueue.global().async {

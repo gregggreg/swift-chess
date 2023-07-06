@@ -9,7 +9,7 @@ import Foundation
 
 extension Chess {
     // Game actions cause changes to the game
-    public enum GameAction {
+	public enum GameAction : Codable {
         case nextTurn
         case startGame
         case pauseGame
@@ -23,7 +23,7 @@ extension Chess {
         case userDropped(position: Chess.Position)
     }
     /// GameUpdate - used to inform of state changes created during gameplay processing
-    public enum GameUpdate {
+	public enum GameUpdate : Codable {
         case gameEnded(result: Chess.Game.PGNResult, status: Chess.GameStatus)
     }
 }

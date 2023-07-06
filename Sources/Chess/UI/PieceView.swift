@@ -8,6 +8,21 @@
 import Foundation
 import SwiftUI
 
+public struct BoardSpace: View {
+	var store: ChessStore
+	let position: Chess.Position
+	public var body: some View {
+		guard let piece = store.game.board.squares[position].piece else {
+			return AnyView(Image(systemName: "circle.dotted").resizable().opacity(0.0001))
+		}
+		return AnyView(PieceView(piece: piece))
+	}
+	public init(position: Chess.Position, store: ChessStore) {
+		self.position = position
+		self.store = store
+	}
+}
+
 public struct DraggablePiece: View {
     @EnvironmentObject var store: ChessStore
     let position: Chess.Position

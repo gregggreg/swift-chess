@@ -73,5 +73,32 @@ public extension Chess.Robot {
             self.strategist = monty
             super.init(side: side, matchLength: nil)
         }
-    }
+		
+		enum CodingKeys: CodingKey {
+			case budget
+			case explore
+		}
+		
+		required public init(from decoder: Decoder) throws {
+			let mixmax = GKMonteCarloStrategist()
+			self.strategist = mixmax
+			try super.init(from: decoder)
+			let container = try decoder.container(keyedBy: CodingKeys.self)
+			let budget = try container.decode(Int.self, forKey: .budget)
+			let explore = try container.decode(Int.self, forKey: .explore)
+			self.strategist.budget = budget
+			self.strategist.explorationParameter = explore
+		}
+		
+		public override func encode(to encoder: Encoder) throws {
+			try super.encode(to: encoder)
+			var container = encoder.container(keyedBy: CodingKeys.self)
+			try container.encode(self.strategist.budget, forKey: .budget)
+			try container.encode(self.strategist.explorationParameter, forKey: .explore)
+		}
+		
+		public override func subType() -> Chess.Player.Type {
+			return Self.self
+		}
+	}
 }

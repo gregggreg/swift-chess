@@ -7,7 +7,7 @@
 import Foundation
 
 public extension Chess {
-    enum Side: String {
+	enum Side: String, Codable {
         case black = "b"
         case white = "w"
         public var rankDirection: Int {

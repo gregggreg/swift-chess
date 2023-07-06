@@ -7,7 +7,7 @@
 import Foundation
 
 public extension Chess {
-    enum PieceType {
+	enum PieceType : String, Codable {
         case pawn
         case knight
         case bishop

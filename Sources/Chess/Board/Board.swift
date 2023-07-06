@@ -7,7 +7,7 @@
 import Foundation
 
 public extension Chess {
-    struct Board {
+	struct Board : Codable {
         let populateExpensiveVisuals: Bool
         public var squares: [Square] = []
         public var turns: [Turn] = []

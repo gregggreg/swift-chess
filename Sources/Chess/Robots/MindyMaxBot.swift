@@ -51,7 +51,7 @@ public extension Chess.Robot {
                 guard let strategy = self.strategist.bestMoveForActivePlayer() else {
                     let square = game.board.squareForActiveKing
                     guard square.piece?.side == self.side else {
-                        Chess.log.critical("Misconfigured board, bot cannot find it's own king.")
+                        Chess.log.critical("Misconfigured board, bot cannot find its own king.")
                         return
                     }
                     let move = self.side.resigns(king: square.position)
@@ -72,5 +72,28 @@ public extension Chess.Robot {
             self.strategist = mixmax
             super.init(side: side, matchLength: nil)
         }
-    }
+		
+		enum CodingKeys: CodingKey {
+			case maxLookAheadDepth
+		}
+		
+		required public init(from decoder: Decoder) throws {
+			let mixmax = GKMinmaxStrategist()
+			self.strategist = mixmax
+			try super.init(from: decoder)
+			let container = try decoder.container(keyedBy: CodingKeys.self)
+			let maxDepth = try container.decode(Int.self, forKey: .maxLookAheadDepth)
+			self.strategist.maxLookAheadDepth = maxDepth
+		}
+		
+		public override func encode(to encoder: Encoder) throws {
+			try super.encode(to: encoder)
+			var container = encoder.container(keyedBy: CodingKeys.self)
+			try container.encode(self.strategist.maxLookAheadDepth, forKey: .maxLookAheadDepth)
+		}
+		
+		public override func subType() -> Chess.Player.Type {
+			return Self.self
+		}
+	}
 }

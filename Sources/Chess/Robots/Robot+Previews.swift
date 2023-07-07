@@ -19,8 +19,7 @@ struct RobotGamePreview: PreviewProvider {
     }()
     static var previews: some View {
         HStack {
-            BoardView()
-                .environmentObject(store)
+			DraggableBoardView(store: store)
             VStack {
                 Button("Play") {
                     store.gameAction(.startGame)

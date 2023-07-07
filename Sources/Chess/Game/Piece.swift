@@ -11,7 +11,7 @@ public extension Chess {
         public static func == (lhs: Piece, rhs: Piece) -> Bool {
             return lhs.pieceType.fen() == rhs.pieceType.fen()
         }
-        public var id = UUID()
+		public var id: UUID
         public let side: Side
         public var pieceType: PieceType
         public var FEN: String {
@@ -28,6 +28,7 @@ public extension Chess {
         public init(side: Side, pieceType: PieceType) {
             self.side = side
             self.pieceType = pieceType
+			self.id = UUID()
             self.UI = Chess.PieceGlyph(side: side, pieceType: pieceType)
         }
         public static func from(fen: String) -> Piece? {

@@ -27,8 +27,7 @@ struct SwiftChessPreview: PreviewProvider {
     }()
     static var previews: some View {
         HStack {
-            BoardView()
-                .environmentObject(sampleStore)
+			DraggableBoardView(store: sampleStore)
             VStack {
                 Button("Play") {
                     sampleStore.gameAction(.startGame)

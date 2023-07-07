@@ -82,15 +82,15 @@ struct ChessBoardColorsPreview: PreviewProvider {
     static var previews: some View {
         VStack {
             HStack {
-                BoardView()
+				DraggableBoardView(store: previewChessStore)
                     .environmentObject(brown)
-                BoardView()
+				DraggableBoardView(store: previewChessStore)
                     .environmentObject(blue)
             }
             HStack {
-                BoardView()
+				DraggableBoardView(store: previewChessStore)
                     .environmentObject(green)
-                BoardView()
+				DraggableBoardView(store: previewChessStore)
                     .environmentObject(purple)
             }
         }

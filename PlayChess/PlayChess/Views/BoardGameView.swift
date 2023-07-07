@@ -49,7 +49,7 @@ struct BoardGameView: View {
                 }
                 .playerFrame(geometry)
                 // The chess board
-                BoardView()
+				DraggableBoardView(store: previewChessStore)
                     .boardFrame(geometry)
                 // Bottom player area
                 ZStack {

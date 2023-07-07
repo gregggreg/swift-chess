@@ -31,8 +31,7 @@ struct ChessStorePreview: PreviewProvider {
     @State static var debugLabel: String = ""
     static var previews: some View {
         HStack {
-            BoardView()
-                .environmentObject(store)
+			DraggableBoardView(store: store)
             VStack {
                 Text(debugLabel)
                 Button("Refresh") {

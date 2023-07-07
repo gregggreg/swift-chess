@@ -82,7 +82,6 @@ struct SquareTargetedPreview: PreviewProvider {
         return store
     }()
     static var previews: some View {
-        BoardView()
-            .environmentObject(targetStore)
+		DraggableBoardView(store: targetStore)
     }
 }

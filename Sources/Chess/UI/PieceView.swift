@@ -11,12 +11,21 @@ import SwiftUI
 public struct BoardSpace: View {
 	var store: ChessStore
 	let position: Chess.Position
-	public var body: some View {
-		guard let piece = store.game.board.squares[position].piece else {
-			return AnyView(Image(systemName: "circle.dotted").resizable().opacity(0.0001))
+	
+	@ViewBuilder
+	private var spaceView : some View {
+		if let piece = store.game.board.squares[position].piece {
+			PieceView(piece: piece)
 		}
-		return AnyView(PieceView(piece: piece))
+		else {
+			Image(systemName: "circle.dotted").resizable().opacity(0.0001)
+		}
 	}
+	
+	public var body: some View {
+		spaceView
+	}
+	
 	public init(position: Chess.Position, store: ChessStore) {
 		self.position = position
 		self.store = store
@@ -51,15 +60,16 @@ public struct PieceView: View {
     let piece: Chess.Piece
     let addDetails: Bool
     let lineWidth: CGFloat
+	
+	@ViewBuilder
     func details(piece: Chess.Piece) -> some View {
-        guard addDetails else {
-            return AnyView(EmptyView())
-        }
-        return AnyView(
-            // Render the details in the highlight color
-            PieceShape.Details(artwork: piece.artwork)
-                .stroke(piece.style.highlight, lineWidth: lineWidth * 1.5)
-        )
+		if addDetails {
+			PieceShape.Details(artwork: piece.artwork)
+				.stroke(piece.style.highlight, lineWidth: lineWidth * 1.5)
+		}
+		else {
+			EmptyView()
+		}
     }
     public var body: some View {
         ZStack {

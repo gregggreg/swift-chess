@@ -12,6 +12,10 @@ public struct DraggableBoardView : View {
 	
 	@State public var store: ChessStore
 	
+	public init(store: ChessStore) {
+		self.store = store
+	}
+	
 	public var body: some View {
 		BoardView(pieceMaker: { position, squareSize in
 			DraggablePiece(position: position)

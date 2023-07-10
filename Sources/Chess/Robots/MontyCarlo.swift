@@ -44,27 +44,22 @@ public extension Chess.Robot {
             board = Chess.BoardVariant(originalFEN: game.board.FEN)
             strategist.gameModel = board
             strategist.randomSource = GKARC4RandomSource()
-            weak var weakSelf = self
-            weak var weakDelegate = delegate
-            Thread.detachNewThread { [game] in
-                guard let self = weakSelf, let delegate = weakDelegate else { return }
-                guard let strategy = self.strategist.bestMoveForActivePlayer() else {
-                    let square = game.board.squareForActiveKing
-                    guard square.piece?.side == self.side else {
-                        Chess.log.critical("Misconfigured board, bot cannot find it's own king.")
-                        return
-                    }
-                    let move = self.side.resigns(king: square.position)
-                    delegate.gameAction(.makeMove(move: move))
-                    return
-                }
-                guard let variant = (strategy as? Chess.GameModelUpdate)?.variant,
-                      let move = variant.changes.last else {
-                    Chess.log.critical("Misconfigured strategist, model update not validz.")
-                    return
-                }
-                delegate.gameAction(.makeMove(move: move))
-            }
+			guard let strategy = self.strategist.bestMoveForActivePlayer() else {
+				let square = game.board.squareForActiveKing
+				guard square.piece?.side == self.side else {
+					Chess.log.critical("Misconfigured board, bot cannot find it's own king.")
+					return
+				}
+				let move = self.side.resigns(king: square.position)
+				ChessStore.makeMove(move, game: &game)
+				return
+			}
+			guard let variant = (strategy as? Chess.GameModelUpdate)?.variant,
+				  let move = variant.changes.last else {
+				Chess.log.critical("Misconfigured strategist, model update not validz.")
+				return
+			}
+			ChessStore.makeMove(move, game: &game)
         }
         public init(side: Chess.Side, budget: Int = 2, explore: Int = 2) {
             let monty = GKMonteCarloStrategist()

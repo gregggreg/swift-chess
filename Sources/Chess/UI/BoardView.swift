@@ -10,15 +10,11 @@ import Combine
 
 public struct DraggableBoardView : View {
 	
-	@State public var store: ChessStore
-	
-	public init(store: ChessStore) {
-		self.store = store
-	}
+	@StateObject public var store: ChessStore
 	
 	public var body: some View {
-		BoardView(pieceMaker: { position, squareSize in
-			DraggablePiece(position: position)
+		BoardView(store: store, pieceMaker: { position, squareSize in
+			DraggablePiece(store: store, position: position)
 				.onTapGesture {
 					store.gameAction(.userTappedSquare(position: position))
 				}
@@ -29,19 +25,19 @@ public struct DraggableBoardView : View {
 
 public struct BoardView<Content>: View where Content: View {
 	
-    @State public var store: ChessStore
-	public var pieceMaker : (Int, CGFloat)->Content
-    public let columns: [GridItem] = .init(repeating: .chessFile, count: 8)
+    var store: ChessStore
+	var pieceMaker : (Int, CGFloat)->Content
+	let columns: [GridItem] = .init(repeating: .chessFile, count: 8)
     public var body: some View {
         GeometryReader { geometry in
             ZStack {
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(0..<64) { idx in
                         ZStack {
-							SquareBackground(idx, store: store)
-                            SquareMoveHighlight(idx, store: store)
-                            SquareSelected(idx, store: store)
-                            SquareTargeted(idx, store: store)
+							SquareBackground(store: store, position: idx)
+							SquareMoveHighlight(store: store, position: idx)
+							SquareSelected(store: store, position: idx)
+							SquareTargeted(store: store, position: idx)
                         }
                     }
                 }
@@ -55,14 +51,6 @@ public struct BoardView<Content>: View where Content: View {
             .drawingGroup()
         }
     }
-	public init(@ViewBuilder pieceMaker: @escaping (Int, CGFloat)->Content) {
-		let white = Chess.HumanPlayer(side: .white)
-		let black = Chess.HumanPlayer(side: . black)
-		let game = Chess.Game(white, against: black)
-		let store = ChessStore(game: game)
-		self.pieceMaker = pieceMaker
-		self.store = store
-	}
 	public init(store: ChessStore, @ViewBuilder pieceMaker: @escaping (Int, CGFloat)->Content) {
 		self.store = store
 		self.pieceMaker = pieceMaker

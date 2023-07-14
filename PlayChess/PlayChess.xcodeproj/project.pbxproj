@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3725B17C2A5B965500D2880F /* Chess in Frameworks */ = {isa = PBXBuildFile; productRef = 3725B17B2A5B965500D2880F /* Chess */; };
 		CD19AB97258A8AE000E54FBA /* BoardGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD19AB96258A8AE000E54FBA /* BoardGameView.swift */; };
 		CD2FE412258E789D003D74D9 /* DungeonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2FE411258E789D003D74D9 /* DungeonView.swift */; };
 		CD3A47A3258D2F0C0009C549 /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3A47A2258D2F0C0009C549 /* GameOverView.swift */; };
@@ -28,7 +29,6 @@
 		CDB6007A258DF291009BBFE9 /* ChessLedgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB60079258DF291009BBFE9 /* ChessLedgerView.swift */; };
 		CDB6330C258FEFAC009C1326 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB6330B258FEFAC009C1326 /* WelcomeView.swift */; };
 		CDB7946725A1276A00D1877B /* NewGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7946625A1276A00D1877B /* NewGameView.swift */; };
-		CDC14349259408CF0065D5FB /* Chess in Frameworks */ = {isa = PBXBuildFile; productRef = CDC14348259408CF0065D5FB /* Chess */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,7 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDC14349259408CF0065D5FB /* Chess in Frameworks */,
+				3725B17C2A5B965500D2880F /* Chess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,7 +216,7 @@
 			);
 			name = PlayChess;
 			packageProductDependencies = (
-				CDC14348259408CF0065D5FB /* Chess */,
+				3725B17B2A5B965500D2880F /* Chess */,
 			);
 			productName = PlayChess;
 			productReference = CD50BB2625815C2E0013B873 /* PlayChess.app */;
@@ -291,7 +291,7 @@
 			);
 			mainGroup = CD50BB1D25815C2E0013B873;
 			packageReferences = (
-				CDC14347259408CF0065D5FB /* XCRemoteSwiftPackageReference "swift-chess" */,
+				3725B17A2A5B965500D2880F /* XCRemoteSwiftPackageReference "swift-chess" */,
 			);
 			productRefGroup = CD50BB2725815C2E0013B873 /* Products */;
 			projectDirPath = "";
@@ -422,7 +422,6 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				EXCLUDED_ARCHS = "";
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -676,20 +675,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CDC14347259408CF0065D5FB /* XCRemoteSwiftPackageReference "swift-chess" */ = {
+		3725B17A2A5B965500D2880F /* XCRemoteSwiftPackageReference "swift-chess" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:dpedley/swift-chess.git";
+			repositoryURL = "https://github.com/gregggreg/swift-chess.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CDC14348259408CF0065D5FB /* Chess */ = {
+		3725B17B2A5B965500D2880F /* Chess */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CDC14347259408CF0065D5FB /* XCRemoteSwiftPackageReference "swift-chess" */;
+			package = 3725B17A2A5B965500D2880F /* XCRemoteSwiftPackageReference "swift-chess" */;
 			productName = Chess;
 		};
 /* End XCSwiftPackageProductDependency section */

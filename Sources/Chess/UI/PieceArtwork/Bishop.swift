@@ -72,11 +72,11 @@ struct BishopPreview: PreviewProvider {
     static var store = ChessStore(game: .sampleGame())
     static var previews: some View {
         ZStack {
-            DraggablePiece(position: .c8)
+			DraggablePiece(store: store, position: .c8)
                 .environmentObject(store)
                 .frame(width: 100, height: 100, alignment: .center)
                 .offset(x: -50, y: 0)
-            DraggablePiece(position: .c1)
+            DraggablePiece(store: store, position: .c1)
                 .environmentObject(store)
                 .frame(width: 100, height: 100, alignment: .center)
                 .offset(x: 50, y: 0)

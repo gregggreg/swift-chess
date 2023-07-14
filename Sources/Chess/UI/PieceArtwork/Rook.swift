@@ -65,11 +65,11 @@ struct RookPreview: PreviewProvider {
     static var store = ChessStore(game: .sampleGame())
     static var previews: some View {
         ZStack {
-            DraggablePiece(position: .a8)
+            DraggablePiece(store: store, position: .a8)
                 .environmentObject(store)
                 .frame(width: 100, height: 100, alignment: .center)
                 .offset(x: -50, y: 0)
-            DraggablePiece(position: .a1)
+            DraggablePiece(store: store, position: .a1)
                 .environmentObject(store)
                 .frame(width: 100, height: 100, alignment: .center)
                 .offset(x: 50, y: 0)

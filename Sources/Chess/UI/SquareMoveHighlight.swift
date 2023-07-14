@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct SquareMoveHighlight: View {
-    public var store: ChessStore
+	@StateObject public var store: ChessStore
     let position: Chess.Position
     public var body: some View {
         guard store.environment.preferences.highlightLastMove,
@@ -25,8 +25,4 @@ public struct SquareMoveHighlight: View {
         return AnyView(highlight)
     }
     static let chessMoveHighlight = Color(.sRGB, red: 0.0, green: 0.1, blue: 0.9, opacity: 0.3)
-	public init(_ idx: Int, store: ChessStore) {
-		self.store = store
-        self.position = Chess.Position(idx)
-    }
 }

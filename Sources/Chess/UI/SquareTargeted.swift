@@ -41,7 +41,7 @@ public struct SquareCorners: Shape {
 }
 
 public struct SquareTargeted: View {
-    public var store: ChessStore
+	@StateObject public var store: ChessStore
     let position: Chess.Position
     public var body: some View {
         guard store.environment.preferences.highlightChoices,
@@ -63,10 +63,6 @@ public struct SquareTargeted: View {
         return AnyView(selected)
     }
     static let chessChoiceHighlight = Color(.sRGB, red: 0.5, green: 0.3, blue: 0.3, opacity: 0.35)
-	public init(_ idx: Int, store: ChessStore) {
-        self.position = Chess.Position(idx)
-		self.store = store
-    }
 }
 
 struct SquareTargetedPreview: PreviewProvider {

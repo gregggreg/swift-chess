@@ -71,6 +71,15 @@ public extension Chess {
                                               tags: [:],
                                               moves: [])
         }
+		public mutating func reset() {
+			botPausedMove = nil
+			round = 1
+			pgn = Self.freshPGN(black, white)
+			clearDungeons()
+			board.resetBoard()
+			kingFlash = false
+			info = nil
+		}
         public mutating func start() {
             userPaused = false
             nextTurn()

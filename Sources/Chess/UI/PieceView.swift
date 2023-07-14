@@ -8,32 +8,8 @@
 import Foundation
 import SwiftUI
 
-public struct BoardSpace: View {
-	var store: ChessStore
-	let position: Chess.Position
-	
-	@ViewBuilder
-	private var spaceView : some View {
-		if let piece = store.game.board.squares[position].piece {
-			PieceView(piece: piece)
-		}
-		else {
-			Image(systemName: "circle.dotted").resizable().opacity(0.0001)
-		}
-	}
-	
-	public var body: some View {
-		spaceView
-	}
-	
-	public init(position: Chess.Position, store: ChessStore) {
-		self.position = position
-		self.store = store
-	}
-}
-
 public struct DraggablePiece: View {
-    @EnvironmentObject var store: ChessStore
+    @StateObject var store: ChessStore
     let position: Chess.Position
     public var body: some View {
         guard let piece = store.game.board.squares[position].piece else {
@@ -45,9 +21,6 @@ public struct DraggablePiece: View {
                 return NSItemProvider(object: self.position.FEN as NSString)
             }
         )
-    }
-    public init(position: Chess.Position) {
-        self.position = position
     }
 }
 

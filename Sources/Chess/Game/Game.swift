@@ -76,6 +76,7 @@ public extension Chess {
 			round = 1
 			pgn = Self.freshPGN(black, white)
 			clearDungeons()
+			clearActivePlayerSelections()
 			board.resetBoard()
 			kingFlash = false
 			info = nil

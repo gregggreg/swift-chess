@@ -20,6 +20,11 @@ struct PlayChessApp: App {
         let store = ChessStore(game: Chess.Game(white, against: black))
         store.game.setRobotPlaybackSpeed(1)
         store.environment.target = .production
+		Chess.playerFactory.players.append { side in
+			let robot = Chess.Robot.MindyMaxBot(side: side, maxDepth: 2)
+			//robot.responseDelay = 0.5
+			return robot
+		}
         return store
     }()
     var body: some Scene {

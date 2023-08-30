@@ -8,9 +8,10 @@ import SwiftUI
 public struct SquareBackground: View {
     @StateObject public var store: ChessStore
     let position: Chess.Position
+	var boardColor: Chess.UI.BoardColor
     public var body: some View {
         Rectangle() // The square background
-            .fill(color(store.environment.theme.color, for: position))
+            .fill(color(boardColor, for: position))
             .aspectRatio(1, contentMode: .fill)
             .onDrop(of: [.plainText, .text, .utf8PlainText], delegate: self)
     }

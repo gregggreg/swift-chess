@@ -13,7 +13,7 @@ public struct DraggableBoardView : View {
 	@StateObject public var store: ChessStore
 	
 	public var body: some View {
-		BoardView(store: store, pieceMaker: { position, squareSize in
+		BoardView(store: store, boardColor: store.environment.theme.color, pieceMaker: { position, squareSize in
 			DraggablePiece(store: store, position: position)
 				.onTapGesture {
 					store.gameAction(.userTappedSquare(position: position))
@@ -26,6 +26,7 @@ public struct DraggableBoardView : View {
 public struct BoardView<Content>: View where Content: View {
 	
     var store: ChessStore
+	var boardColor: Chess.UI.BoardColor
 	var pieceMaker : (Int, CGFloat)->Content
 	let columns: [GridItem] = .init(repeating: .chessFile, count: 8)
     public var body: some View {
@@ -34,7 +35,7 @@ public struct BoardView<Content>: View where Content: View {
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(0..<64) { idx in
                         ZStack {
-							SquareBackground(store: store, position: idx)
+							SquareBackground(store: store, position: idx, boardColor: boardColor)
 							SquareMoveHighlight(store: store, position: idx)
 							SquareSelected(store: store, position: idx)
 							SquareTargeted(store: store, position: idx)
@@ -51,8 +52,9 @@ public struct BoardView<Content>: View where Content: View {
             .drawingGroup()
         }
     }
-	public init(store: ChessStore, @ViewBuilder pieceMaker: @escaping (Int, CGFloat)->Content) {
+	public init(store: ChessStore, boardColor: Chess.UI.BoardColor, @ViewBuilder pieceMaker: @escaping (Int, CGFloat)->Content) {
 		self.store = store
+		self.boardColor = boardColor
 		self.pieceMaker = pieceMaker
 	}
 	public static func offset(for position: Int, squareSize: CGFloat) -> CGSize {

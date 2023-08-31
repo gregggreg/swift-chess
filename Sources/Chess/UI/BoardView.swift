@@ -10,7 +10,7 @@ import Combine
 
 public struct DraggableBoardView : View {
 	
-	@StateObject public var store: ChessStore
+	@ObservedObject public var store: ChessStore
 	
 	public var body: some View {
 		BoardView(store: store, boardColor: store.environment.theme.color, pieceMaker: { position, squareSize in
@@ -25,7 +25,7 @@ public struct DraggableBoardView : View {
 
 public struct BoardView<Content>: View where Content: View {
 	
-    var store: ChessStore
+    @ObservedObject var store: ChessStore
 	var boardColor: Chess.UI.BoardColor
 	var pieceMaker : (Int, CGFloat)->Content
 	let columns: [GridItem] = .init(repeating: .chessFile, count: 8)

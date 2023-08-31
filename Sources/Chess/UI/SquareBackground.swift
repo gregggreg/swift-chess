@@ -6,7 +6,7 @@
 import SwiftUI
 
 public struct SquareBackground: View {
-    @StateObject public var store: ChessStore
+    @ObservedObject public var store: ChessStore
     let position: Chess.Position
 	var boardColor: Chess.UI.BoardColor
     public var body: some View {

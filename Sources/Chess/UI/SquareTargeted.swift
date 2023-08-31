@@ -41,7 +41,7 @@ public struct SquareCorners: Shape {
 }
 
 public struct SquareTargeted: View {
-	@StateObject public var store: ChessStore
+	@ObservedObject public var store: ChessStore
     let position: Chess.Position
     public var body: some View {
         guard store.environment.preferences.highlightChoices,

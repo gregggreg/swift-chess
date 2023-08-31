@@ -15,9 +15,9 @@ public extension Chess {
 		}
 		
         static let minimalHumanTimeinterval: TimeInterval = 0.1
-        public var chessBestMoveCallback: ChessTurnCallback?
-		public var initialPositionTapped: Chess.Position?
-        public var moveAttempt: Chess.Move? {
+        @Published public var chessBestMoveCallback: ChessTurnCallback?
+		@Published public var initialPositionTapped: Chess.Position?
+		@Published public var moveAttempt: Chess.Move? /*{
             didSet {
                 if let move = moveAttempt, let callback = chessBestMoveCallback {
                     callback(move)
@@ -25,7 +25,7 @@ public extension Chess {
                     initialPositionTapped = nil
                 }
             }
-        }
+        }*/
 		
 		public override func subType() -> Chess.Player.Type {
 			return Self.self

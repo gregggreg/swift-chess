@@ -51,6 +51,20 @@ public extension Chess.Board {
             isInCheck = nil
         }
     }
+	
+	mutating func update(from other: Chess.Board) {
+		squares = other.squares
+		turns = other.turns
+		isInCheck = other.isInCheck
+		blackCastleKingSide = other.blackCastleKingSide
+		blackCastleQueenSide = other.blackCastleQueenSide
+		whiteCastleKingSide = other.whiteCastleKingSide
+		whiteCastleQueenSide = other.whiteCastleQueenSide
+		fullMoves = other.fullMoves
+		repetitionMap = other.repetitionMap
+		playingSide = other.playingSide
+		fiftyMovesCount = other.fiftyMovesCount
+	}
 }
 
 extension Chess.Board {

@@ -81,6 +81,17 @@ public extension Chess {
 			kingFlash = false
 			info = nil
 		}
+		public mutating func update(from other: Chess.Game) {
+			botPausedMove = other.botPausedMove
+			round = other.round
+			pgn = other.pgn
+			whiteDungeon = other.whiteDungeon
+			blackDungeon = other.blackDungeon
+			clearActivePlayerSelections()
+			board.update(from: other.board)
+			kingFlash = other.kingFlash
+			info = other.info
+		}
         public mutating func start() {
             userPaused = false
             nextTurn()

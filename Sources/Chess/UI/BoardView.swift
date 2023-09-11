@@ -37,6 +37,7 @@ public struct BoardView<Content>: View where Content: View {
                         ZStack {
 							SquareBackground(store: store, position: idx, boardColor: boardColor)
 							SquareMoveHighlight(store: store, position: idx)
+							SquareInCheck(store: store, position: idx)
 							SquareSelected(store: store, position: idx)
 							SquareTargeted(store: store, position: idx)
                         }

@@ -9,6 +9,13 @@ public struct SquareBackground: View {
     @ObservedObject public var store: ChessStore
     let position: Chess.Position
 	var boardColor: Chess.UI.BoardColor
+	
+	public init(store: ChessStore, position: Chess.Position, boardColor: Chess.UI.BoardColor) {
+		self.store = store
+		self.position = position
+		self.boardColor = boardColor
+	}
+	
     public var body: some View {
         Rectangle() // The square background
             .fill(color(boardColor, for: position))

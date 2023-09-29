@@ -24,6 +24,7 @@ public extension Chess {
             }
             return lastTurn.white
         }
+		public var lastMoveTime: TimeInterval?
         public var fiftyMovesCount = 0 // If neither a pawn is moved, nor a capture happens, this increases.
         public var repetitionMap: [String: Int] = [:]
         public var fullMoves = 1 // This is intentionally 1 even at the games start.

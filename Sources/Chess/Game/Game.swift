@@ -203,6 +203,7 @@ public extension Chess {
                 let index = board.turns.count
                 board.turns.append(Chess.Turn(index, white: move, black: nil))
             }
+			board.lastMoveTime = Date().timeIntervalSince1970
             if captureType != nil || pieceType == .pawn {
                 board.fiftyMovesCount = 0
             } else {

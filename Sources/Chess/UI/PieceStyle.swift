@@ -13,7 +13,7 @@ public struct PieceStyle {
     var outline: Color
     var fill: Color
     var highlight: Color
-    init(lineWidth: CGFloat = 5, outline: Color = .black, fill: Color, highlight: Color) {
+    public init(lineWidth: CGFloat = 5, outline: Color = .black, fill: Color, highlight: Color) {
         self.outline = outline
         self.fill = fill
         self.highlight = highlight

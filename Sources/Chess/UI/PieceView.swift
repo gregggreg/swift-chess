@@ -33,12 +33,13 @@ public struct PieceView: View {
     let piece: Chess.Piece
     let addDetails: Bool
     let lineWidth: CGFloat
+	var pieceStyle: PieceStyle
 	
 	@ViewBuilder
     func details(piece: Chess.Piece) -> some View {
 		if addDetails {
 			PieceShape.Details(artwork: piece.artwork)
-				.stroke(piece.style.highlight, lineWidth: lineWidth * 1.5)
+				.stroke(pieceStyle.highlight, lineWidth: lineWidth * 1.5)
 		}
 		else {
 			EmptyView()
@@ -48,20 +49,22 @@ public struct PieceView: View {
         ZStack {
             // Paint the piece
             PieceShape(artwork: piece.artwork)
-                .foregroundColor(piece.style.fill)
+                .foregroundColor(pieceStyle.fill)
             // Then outline it
             PieceShape(artwork: piece.artwork)
-                .stroke(piece.style.outline,
+                .stroke(pieceStyle.outline,
                         lineWidth: lineWidth)
             details(piece: piece)
         }
     }
     public init(piece: Chess.Piece,
                 addDetails: Bool = true,
-                lineWidth: CGFloat = 1) {
+                lineWidth: CGFloat = 1,
+				overrideStyle: PieceStyle? = nil) {
         self.piece = piece
         self.addDetails = addDetails
         self.lineWidth = lineWidth
+		self.pieceStyle = overrideStyle ?? piece.style
     }
 }
 
